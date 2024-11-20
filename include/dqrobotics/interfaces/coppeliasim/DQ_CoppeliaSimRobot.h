@@ -1,7 +1,7 @@
 /**
 (C) Copyright 2024 DQ Robotics Developers
 
-This file is based on DQ Robotics.
+This file is part of DQ Robotics.
 
     DQ Robotics is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -16,19 +16,23 @@ This file is based on DQ Robotics.
     You should have received a copy of the GNU Lesser General Public License
     along with DQ Robotics.  If not, see <http://www.gnu.org/licenses/>.
 
-Contributors:
-- Juan Jose Quiroz Omana
-       - Responsible for the original implementation.
-         The DQ_CoppeliaSimRobot class is partially based on the DQ_VrepRobot class
-         (https://github.com/dqrobotics/cpp-interface-vrep/blob/master/include/dqrobotics/interfaces/vrep/DQ_VrepRobot.h)
+DQ Robotics website: dqrobotics.github.io
 
+Contributors:
+
+   1. Juan Jose Quiroz Omana (juanjose.quirozomana@manchester.ac.uk)
+        - Responsible for the original implementation. This class is based on
+          https://github.com/dqrobotics/cpp-interface-vrep/blob/master/include/dqrobotics/interfaces/vrep/DQ_SerialVrepRobot.h
 */
 
 #pragma once
-#include<string>
-#include<memory>
-#include<dqrobotics/robot_modeling/DQ_Kinematics.h>
-#include<dqrobotics/interfaces/coppeliasim/DQ_CoppeliaSimInterface.h>
+#include <dqrobotics/DQ.h>
+#include <dqrobotics/interfaces/coppeliasim/DQ_CoppeliaSimInterface.h>
+#include <string>
+#include <vector>
+
+
+using namespace Eigen;
 
 namespace DQ_robotics
 {
@@ -36,16 +40,26 @@ class DQ_CoppeliaSimRobot
 {
 protected:
     std::string robot_name_;
-    std::shared_ptr<DQ_CoppeliaSimInterface> coppeliasim_interface_sptr_;
-
-    std::shared_ptr<DQ_CoppeliaSimInterface> _get_interface_sptr() const;
-
-    DQ_CoppeliaSimRobot(const std::string& robot_name,
-                        const std::shared_ptr<DQ_CoppeliaSimInterface>& coppeliasim_interface_sptr);
+    std::vector<std::string> jointnames_;
+    std::string base_frame_name_;
+    DQ_CoppeliaSimRobot(const std::string& robot_name);
 
 public:
     virtual ~DQ_CoppeliaSimRobot() = default;
+
+    virtual std::vector<std::string> get_joint_names() = 0;
+
+    virtual void set_configuration_space(const VectorXd& q) = 0;
+    virtual VectorXd get_configuration_space() = 0;
+
+    virtual void set_target_configuration_space(const VectorXd& q_target)=0;
+
+    virtual VectorXd get_configuration_space_velocities()=0;
+    virtual void set_target_configuration_space_velocities(const VectorXd& v_target)=0;
+
+    virtual void set_configuration_space_torques(const VectorXd& t)=0;
+    virtual VectorXd get_configuration_space_torques()=0;
+
 };
 }
-
 

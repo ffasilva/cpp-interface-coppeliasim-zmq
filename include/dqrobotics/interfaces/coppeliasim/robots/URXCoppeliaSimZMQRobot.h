@@ -1,7 +1,7 @@
 /**
 (C) Copyright 2024 DQ Robotics Developers
 
-This file is part of DQ Robotics.
+This file is based on DQ Robotics.
 
     DQ Robotics is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -16,26 +16,37 @@ This file is part of DQ Robotics.
     You should have received a copy of the GNU Lesser General Public License
     along with DQ Robotics.  If not, see <http://www.gnu.org/licenses/>.
 
-DQ Robotics website: dqrobotics.github.io
-
 Contributors:
-
-   1. Juan Jose Quiroz Omana (juanjose.quirozomana@manchester.ac.uk)
-        - Responsible for the original implementation. This class is based on
-          https://github.com/dqrobotics/cpp-interface-vrep/blob/master/include/dqrobotics/interfaces/vrep/DQ_SerialVrepRobot.h
+- Juan Jose Quiroz Omana
+       - Responsible for the original implementation.
 */
 
-#include <dqrobotics/interfaces/coppeliasim/DQ_CoppeliaSimRobot.h>
-
+#pragma once
+#include <dqrobotics/interfaces/coppeliasim/DQ_CoppeliaSimRobotZMQ.h>
+#include <dqrobotics/robot_modeling/DQ_SerialManipulatorDH.h>
 
 namespace DQ_robotics
 {
 
-DQ_CoppeliaSimRobot::DQ_CoppeliaSimRobot(const std::string &robot_name)
-    :robot_name_{robot_name}
-{
+
+class URXCoppeliaSimZMQRobot: public DQ_CoppeliaSimRobotZMQ
+{   
+public:
+    enum class MODEL{
+        UR5
+    };
+
+public:
+    URXCoppeliaSimZMQRobot(const std::string& robot_name,
+                        const std::shared_ptr<DQ_CoppeliaSimInterfaceZMQ>& coppeliasim_interface_sptr,
+                        const MODEL& model = MODEL::UR5);
+    DQ_SerialManipulatorDH kinematics();
+private:
+    URXCoppeliaSimZMQRobot::MODEL model_;
+
+};
 
 }
 
-}
+
 

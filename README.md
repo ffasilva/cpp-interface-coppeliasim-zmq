@@ -1,34 +1,17 @@
-![Static Badge](https://img.shields.io/badge/status-experimental-critical)![Static Badge](https://img.shields.io/badge/Platform-Apple_silicon-magenta)![Static Badge](https://img.shields.io/badge/Tested-Apple)![Static Badge](https://img.shields.io/badge/Platform-Ubuntu_x64-orange)![Static Badge](https://img.shields.io/badge/tested-green)![Static Badge](https://img.shields.io/badge/Platform-Windows_11-blue)![Static Badge](https://img.shields.io/badge/tested-green)![Static Badge](https://img.shields.io/badge/CoppeliaSim-4.8.0--rev0-orange)![Static Badge](https://img.shields.io/badge/Written_in-C%2B%2B17-blue)![GitHub License](https://img.shields.io/github/license/juanjqo/cpp-interface-coppeliasim)![Static Badge](https://img.shields.io/badge/based_on-ZeroMQ_remote_API-blue)
+![Static Badge](https://img.shields.io/badge/status-experimental-critical)![Static Badge](https://img.shields.io/badge/Platform-Apple_silicon-magenta)![Static Badge](https://img.shields.io/badge/Tested-Apple)![Static Badge](https://img.shields.io/badge/Platform-Ubuntu_x64-orange)![Static Badge](https://img.shields.io/badge/tested-green)![Static Badge](https://img.shields.io/badge/CoppeliaSim-4.8.0--rev0-orange)![Static Badge](https://img.shields.io/badge/Written_in-C%2B%2B17-blue)![GitHub License](https://img.shields.io/github/license/dqrobotics/cpp-interface-coppeliasim-zmq)![Static Badge](https://img.shields.io/badge/based_on-ZeroMQ_remote_API-blue)
 
 
+# cpp-interface-coppeliasim-zmq
 
+A DQ Robotics interface based on the ZeroMQ remote API to connect with CoppeliaSim. This API provides more functionalities than the legacy remote API (the one used by the [DQ Robotics interface](https://github.com/dqrobotics/cpp-interface-vrep)).
 
+|  ![Static Badge](https://img.shields.io/badge/CoppeliaSim-4.8.0--rev0-orange)  | SO | Status (C++17) | 
+| ------------- | ------------- |------------- |
+| ![Static Badge](https://img.shields.io/badge/Apple_silicon-magenta)| macOS ![Static Badge](https://img.shields.io/badge/Apple_silicon-magenta) | ![Static Badge](https://img.shields.io/badge/beta-yellow)|
+| ![Static Badge](https://img.shields.io/badge/x64-blue) ![Static Badge](https://img.shields.io/badge/arm64-blue)   | Ubuntu {22.04, 24.04} LTS ![Static Badge](https://img.shields.io/badge/x64-blue) ![Static Badge](https://img.shields.io/badge/arm64-blue)  |  ![Static Badge](https://img.shields.io/badge/beta-yellow)|
+| ![Static Badge](https://img.shields.io/badge/x64-blue) ![Static Badge](https://img.shields.io/badge/arm64-blue)   | Windows 11 ![Static Badge](https://img.shields.io/badge/x64-blue) ![Static Badge](https://img.shields.io/badge/arm64-blue)   |  ![Static Badge](https://img.shields.io/badge/unsupported-gray) | 
 
-# dqrobotics-interface-coppeliasim (Matlab ≥ 2023b, C++17, and CoppeliaSim ≥ v4.7.0-rev0)
-
-An **unofficial** DQ Robotics interface to connect with CoppeliaSim based on ZeroMQ remote API. This API provides more functionalities when compared to the legacy remote API (the one used by the [DQ Robotics interface](https://github.com/dqrobotics/cpp-interface-vrep)). However, unlike DQ Robotics, dqrobotics-interface-coppeliasim is experimental and lacks official support. 
-
-|  ![Static Badge](https://img.shields.io/badge/CoppeliaSim-4.8.0--rev0-orange)  | SO | Status (C++17) | Status (Python) |  Status (Matlab ≥ R2023b) |
-| ------------- | ------------- |------------- |------------- |------------- |
-| ![Static Badge](https://img.shields.io/badge/Apple_silicon-magenta)| macOS ![Static Badge](https://img.shields.io/badge/Apple_silicon-magenta) | ![Static Badge](https://img.shields.io/badge/beta-yellow)|![Static Badge](https://img.shields.io/badge/unsupported-gray)|![Static Badge](https://img.shields.io/badge/pre--alpha-red)|
-| ![Static Badge](https://img.shields.io/badge/x64-blue) ![Static Badge](https://img.shields.io/badge/arm64-blue)   | Ubuntu {22.04, 24.04} LTS ![Static Badge](https://img.shields.io/badge/x64-blue) ![Static Badge](https://img.shields.io/badge/arm64-blue)  |  ![Static Badge](https://img.shields.io/badge/beta-yellow)|![Static Badge](https://img.shields.io/badge/unsupported-gray)|![Static Badge](https://img.shields.io/badge/pre--alpha-red)|
-| ![Static Badge](https://img.shields.io/badge/x64-blue) ![Static Badge](https://img.shields.io/badge/arm64-blue)   | Windows 11 ![Static Badge](https://img.shields.io/badge/x64-blue) ![Static Badge](https://img.shields.io/badge/arm64-blue)   |  ![Static Badge](https://img.shields.io/badge/pre--alpha-red) | ![Static Badge](https://img.shields.io/badge/unsupported-gray)|![Static Badge](https://img.shields.io/badge/pre--alpha-red)|
-
-
-# Don't use this interface for your project! :warning:
-
-![Static Badge](https://img.shields.io/badge/warning-yellow)
-This project is under active development, incomplete, and experimental/unstable. Therefore, **I highly recommend** the [official DQ Robotics interface](https://github.com/dqrobotics/cpp-interface-vrep) if you want stability and outstanding technical support. 
-
-| Feature  | Status (C++17) | Status (Python) |  Status (Matlab ≥ R2023b) |
-| -------- | -------------- |---------------- |-------------------------- |
-|  Implementation | :construction: under construction :rocket:| -- | :construction: under construction :turtle: |
-| Documentation | :construction: under construction :rocket: | -- | :pushpin: planned |
-| Unit Testing | :construction: under construction :rocket: | -- | :pushpin: planned|
-| Packages | :pushpin: planned | -- | :pushpin: planned |
-
-**The C++17 version is the baseline, and you could expect it to be the most stable, reliable, and better-supported version.**
-
+# Instructions for Developers 
 
 ## Basic requirements (for C++ users)
 
@@ -86,14 +69,14 @@ Instructions missing here!
 ### MacOS (Apple Silicon)
 
 ```shell
-brew install pkg-config cppzmq eigen
+brew install pkg-config cppzmq eigen boost
 ```
 
 ### Ubuntu 
 
 
 ```shell
-sudo apt install libzmq3-dev
+sudo apt install libzmq3-dev libboost-all-dev
 ```
 
 ### Windows 
@@ -107,11 +90,11 @@ Required vcpkg packages:
 
 ## Build and Install (UNIX)
 
-Example for coppeliasim-v4.8.0-rev0. Note: :warning: replace coppeliasim-v4.8.0-rev0 with the actual CoppeliaSim version you have (≥ v4.7.0-rev0). 
+Example for coppeliasim-v4.8.0-rev0. Note: :warning: replace coppeliasim-v4.8.0-rev0 with your CoppeliaSim version (≥ v4.7.0-rev0). 
 
 ```shell
-git clone https://github.com/juanjqo/dqrobotics-interface-coppeliasim --recursive
-cd dqrobotics-interface-coppeliasim/coppeliarobotics/zmqRemoteApi
+git clone https://github.com/dqrobotics/cpp-interface-coppeliasim-zmq.git --recursive
+cd cpp-interface-coppeliasim-zmq/submodules/zmqRemoteApi
 git checkout coppeliasim-v4.8.0-rev0
 cd ../.. 
 mkdir build && cd build
@@ -146,8 +129,6 @@ cmake --install .
 ```
 
 
-
-
 # Example (Find more examples [here](https://github.com/juanjqo/dqrobotics-interface-coppeliasim-examples))
 
 1) Open CoppeliaSim. (You do not need to load a specific scene).
@@ -157,66 +138,55 @@ cmake --install .
 
 ```cpp
 #include <dqrobotics/DQ.h>
-#include <dqrobotics/interfaces/coppeliasim/DQ_CoppeliaSimInterface.h>
-#include <dqrobotics/interfaces/coppeliasim/robots/URXCoppeliaSimRobot.h>
+#include <dqrobotics/interfaces/coppeliasim/DQ_CoppeliaSimInterfaceZMQExperimental.h>
 
 using namespace DQ_robotics;
 using namespace Eigen;
 
-VectorXd compute_control_signal(const MatrixXd& J,
-                                const VectorXd& q,
-                                const double& damping,
-                                const double& gain,
-                                const VectorXd& task_error);
 
 int main()
 {
-    auto vi = std::make_shared<DQ_CoppeliaSimInterface>();
+    auto vi = std::make_shared<DQ_CoppeliaSimInterfaceZMQExperimental>();
     vi->connect();
 
+    //To enable experimental methods
     // Load the models only if they are not already on the scene.
     vi->load_from_model_browser("/robots/non-mobile/UR5.ttm", "/UR5");
     vi->load_from_model_browser("/other/reference frame.ttm", "/Current_pose");
     vi->load_from_model_browser("/other/reference frame.ttm", "/Desired_pose");
+
+
+    auto jointnames = vi->get_jointnames_from_parent_object("/UR5");
+    vi->set_joint_modes(jointnames, DQ_CoppeliaSimInterfaceZMQExperimental::JOINT_MODE::DYNAMIC);
+    vi->set_joint_control_modes(jointnames, DQ_CoppeliaSimInterfaceZMQExperimental::JOINT_CONTROL_MODE::VELOCITY);
+    vi->enable_dynamics(true);
+    vi->set_engine(DQ_CoppeliaSimInterfaceZMQExperimental::ENGINE::MUJOCO);
+    vi->set_simulation_time_step(0.05);
+    vi->set_stepping_mode(true);
+    vi->draw_trajectory(jointnames.back(), 2, {1,0,1}, 1000);
+
     vi->start_simulation();
 
-    auto robot = URXCoppeliaSimRobot("/UR5", vi, URXCoppeliaSimRobot::MODEL::UR5);
-    auto robot_model = robot.kinematics();
-    robot.set_robot_as_visualization_tool();
 
-    auto q = robot.get_configuration_space_positions();
-    double gain = 10;
-    double T = 0.001;
-    double damping = 0.01;
+    auto qd = (VectorXd(6)<< 0.5, 0.5, 0.5,0.5,0.5,0.5).finished();
+    auto q = vi->get_joint_positions(jointnames);
+    VectorXd error = qd-q;
+    double k = 0.1;
 
-    auto xd = robot_model.fkm(((VectorXd(6) <<  0.5, 0, 1.5, 0, 0, 0).finished()));
-    vi->set_object_pose("/Desired_pose", xd);
+    double epsilon = 0.1;
 
-    for (int i=0; i<300; i++)
+    while (error.norm() > epsilon)
     {
-        auto x = robot_model.fkm(q);
-        vi->set_object_pose("/Current_pose", x);
-        auto J =  robot_model.pose_jacobian(q);
-        auto Jt = robot_model.translation_jacobian(J, x);
-        auto task_error = (x.translation()-xd.translation()).vec4();
-        auto u = compute_control_signal(Jt, q, damping, gain, task_error);
-        q = q + T*u;
-        robot.set_control_inputs(q);
-        std::cout<<"error: "<<task_error.norm()<<std::endl;
+        q = vi->get_joint_positions(jointnames);
+        error = qd-q;
+        auto u = k*error;
+        vi->set_joint_target_velocities(jointnames, u);
+        vi->trigger_next_simulation_step();
+        std::cout<<"error: "<<error.norm()<<std::endl;
     }
     vi->stop_simulation();
 }
 
-VectorXd compute_control_signal(const MatrixXd& J,
-                                const VectorXd& q,
-                                const double& damping,
-                                const double& gain,
-                                const VectorXd& task_error)
-{
-    VectorXd u = (J.transpose()*J + damping*damping*MatrixXd::Identity(q.size(), q.size())).inverse()*
-        J.transpose()*(-gain*task_error);
-    return u;
-}
 ```
 
 
@@ -224,7 +194,7 @@ VectorXd compute_control_signal(const MatrixXd& J,
 add_executable(${CMAKE_PROJECT_NAME} main.cpp)
 target_link_libraries(${CMAKE_PROJECT_NAME}
                       dqrobotics
-                      dqrobotics-interface-coppeliasim)
+                      dqrobotics-interface-coppeliasim-zmq)
 ```
 
 

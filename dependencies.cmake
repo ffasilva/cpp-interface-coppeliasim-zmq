@@ -8,25 +8,13 @@ endif(POLICY CMP0135)
 if(UNIX AND NOT APPLE)
     FIND_PACKAGE(Eigen3 REQUIRED)
     INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
-    #find_package(cppzmq REQUIRED)
-    #find_package(ZeroMQ REQUIRED)
     ADD_COMPILE_OPTIONS(-Werror=return-type -Wall -Wextra -Wmissing-declarations -Wredundant-decls -Woverloaded-virtual)
-
-    include(FetchContent)
-    set(CPPZMQ_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-    FetchContent_Declare(cppzmq
-        GIT_REPOSITORY https://github.com/zeromq/cppzmq
-        SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/cppzmq
-    )
-    FetchContent_GetProperties(cppzmq)
-    if(NOT cppzmq_POPULATED)
-        FetchContent_Populate(cppzmq)
-        add_subdirectory(${cppzmq_SOURCE_DIR} ${cppzmq_BINARY_DIR} EXCLUDE_FROM_ALL)
-    endif()
-
+    
+    find_package(Boost 1.71.0 COMPONENTS filesystem system)
+    include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
-if(APPLE) #APPLE
+if(APPLE)
     INCLUDE_DIRECTORIES(
         /usr/local/include/
         /usr/local/include/eigen3
@@ -40,10 +28,8 @@ if(APPLE) #APPLE
         /usr/local/lib/
         /opt/homebrew/lib/
         )
-
     find_package(cppzmq REQUIRED)
     find_package(ZeroMQ REQUIRED)
-
 endif()
 
 
@@ -62,73 +48,44 @@ if(WIN32)
         IMPORTED_LOCATION ${DQROBOTICS_PATH}/bin/dqrobotics.dll
         IMPORTED_IMPLIB   ${DQROBOTICS_PATH}/lib/dqrobotics.lib
         INTERFACE_INCLUDE_DIRECTORIES ${DQROBOTICS_PATH}/include)
+
+    find_package(Boost)
+    if(Boost_FOUND)
+        include_directories(${Boost_INCLUDE_DIRS})
+        message(AUTHOR_WARNING "Local Boost ${Boost_VERSION_MAJOR}.${Boost_VERSION_MINOR}.${Boost_VERSION_COUNT} found!")
+    else()
+        message(AUTHOR_WARNING "Local Boost not found. I'm going to download it!")
+
+        # Download and extract the boost library from GitHub
+        # Add boost lib sources
+        set(BOOST_INCLUDE_LIBRARIES thread format filesystem system program_options)
+        set(BOOST_ENABLE_CMAKE ON)
+
+        message(STATUS "Downloading dependencies. This will take some time...")
+        include(FetchContent)
+        Set(FETCHCONTENT_QUIET FALSE) # Needed to print downloading progress
+        FetchContent_Declare(
+            Boost
+            #URL https://github.com/boostorg/boost/releases/download/boost-1.84.0/boost-1.84.0.tar.gz
+            URL https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.tar.gz
+            USES_TERMINAL_DOWNLOAD FALSE
+            GIT_PROGRESS FALSE
+            DOWNLOAD_NO_EXTRACT FALSE
+        )
+        FetchContent_MakeAvailable(Boost)
+
+        #set(CUSTOM_BOOST_COMPONENTS
+        #    Boost::filesystem
+        #    Boost::format
+        #    Boost::program_options
+        #)
+    endif()
+
 endif()
 
 
-#-----This works but is super slow--------------#
-#set(BOOST_INCLUDE_LIBRARIES thread format filesystem system program_options)
-#set(BOOST_ENABLE_CMAKE ON)
-# Download and extract the boost library from GitHub
-#message(STATUS "Downloading and extracting boost library sources. This will take some time...")
-#Set(FETCHCONTENT_QUIET FALSE)
-#include(FetchContent)
-#FetchContent_Declare(
-#  Boost
-#  GIT_REPOSITORY https://github.com/boostorg/boost.git
-#  GIT_TAG boost-1.84.0
-#  USES_TERMINAL_DOWNLOAD TRUE
-#  GIT_PROGRESS TRUE
-#  GIT_SHALLOW TRUE
-#)
-#FetchContent_MakeAvailable(Boost)
-#-----------------------------------------------
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/submodules/cppzmq)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/submodules/jsoncons/include)
 
 
-find_package(Boost)
-if(Boost_FOUND)
-    #if (Boost_VERSION_MAJOR LESS_EQUAL 1 AND Boost_VERSION_MINOR LESS_EQUAL 81)
-            include_directories(${Boost_INCLUDE_DIRS})
-            message(AUTHOR_WARNING "Local Boost ${Boost_VERSION_MAJOR}.${Boost_VERSION_MINOR}.${Boost_VERSION_COUNT} found!")
-            set(CUSTOM_BOOST_COMPONENTS
-                ${Boost_PROGRAM_FILESYTEM_LIBRARY}
-                ${Boost_PROGRAM_FORMAT_LIBRARY}
-                ${Boost_PROGRAM_OPTIONS_LIBRARY}
-                )
-    #else()
-    #    message(AUTHOR_WARNING "Local Boost ${Boost_VERSION_MAJOR}.${Boost_VERSION_MINOR}.${Boost_VERSION_COUNT} is not compatible. I'm going to download a compatible one!")
-    #endif()
-else()
-    message(AUTHOR_WARNING "Local Boost not found. I'm going to download it!")
-    include(boost_dependencies.cmake)
-endif()
-
-
-
-
-
-include(FetchContent)
-FetchContent_Declare(jsoncons
-    GIT_REPOSITORY https://github.com/danielaparker/jsoncons
-    SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/jsoncons
-)
-FetchContent_GetProperties(jsoncons)
-if(NOT jsoncons_POPULATED)
-    FetchContent_Populate(jsoncons)
-    #add_subdirectory(${jsoncons_SOURCE_DIR} ${jsoncons_BINARY_DIR} EXCLUDE_FROM_ALL)
-endif()
-message(STATUS "Dependencies ready!")
-
-
-
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  # Specify the commit you depend on and update it regularly.
-  #URL https://github.com/google/googletest/archive/5376968f6948923e2411081fd9372e71a59d8e77.zip
-  URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
-)
-
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
 
