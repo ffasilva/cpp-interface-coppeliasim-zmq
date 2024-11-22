@@ -6,11 +6,11 @@ BUILDDIR = build_dir
 build:
 ifeq ($(CI),)
 	echo "Not CI, hopefully launchpad. Clonning submodules manually..."
-	rm -rf coppeliarobotics/{*,.*}
-	rm -rf coppeliarobotics
-	mkdir -p coppeliarobotics
-	git clone --single-branch --branch coppeliasim-v4.2.0-rev5 https://git.launchpad.net/~dqrobotics-dev/dqrobotics/+git/coppelia-include coppeliarobotics/include
-	git clone --single-branch --branch coppeliasim-v4.2.0-rev5 https://git.launchpad.net/~dqrobotics-dev/dqrobotics/+git/coppelia-remoteApi coppeliarobotics/remoteApi
+	rm -rf submodules/{*,.*}
+	rm -rf submodules
+	mkdir -p submodules
+	git clone --single-branch --branch v0.178.0 https://git.launchpad.net/~dqrobotics-dev/dqrobotics/+git/danielaparker-jsoncons submodules/jsoncons
+	git clone --single-branch --branch coppeliasim-v4.7.0-rev2 https://git.launchpad.net/~dqrobotics-dev/dqrobotics/+git/coppelia-zmqRemoteApi submodules/zmqRemoteApi
 else
 	echo "CI detected, skipping manual submodule load"
 endif
