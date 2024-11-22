@@ -1,0 +1,12 @@
+Source: libdqrobotics-interface-coppeliasim-zmq
+Section: devel
+Priority: optional
+Maintainer: Murilo Marinho <murilomarinho@ieee.org>
+Build-Depends: cmake, libeigen3-dev, git, libdqrobotics, libdqrobotics-interface-coppeliasim, cppzmq-dev, libboost-filesystem1.74-dev, libboost-system1.74-dev
+Homepage: https://dqrobotics.github.io/
+
+Package: libdqrobotics-interface-coppeliasim-zmq
+Architecture: any
+Depends: libdqrobotics, libdqrobotics-interface-coppeliasim, libboost-filesystem1.74.0, libboost-system1.74.0
+Description: DQ Robotics interface with CoppeliaSim using ZMQ
+ The dual quaternion robotics library interface with CoppeliaSim using ZMQ.
