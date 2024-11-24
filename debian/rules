@@ -11,8 +11,6 @@ ifeq ($(CI),)
 	mkdir -p submodules
 	git clone --single-branch --branch v0.178.0 https://git.launchpad.net/~dqrobotics-dev/dqrobotics/+git/danielaparker-jsoncons submodules/jsoncons
 	git clone --single-branch --branch coppeliasim-v4.7.0-rev2 https://git.launchpad.net/~dqrobotics-dev/dqrobotics/+git/coppelia-zmqRemoteApi submodules/zmqRemoteApi
-	# [Murilo] Hack to make it work in Ubuntu 22.04 and 24.04. cppzmq-dev does not exist on 22.04 and is paramount in 24.04.
-	apt install cppzmq-dev || true
 else
 	echo "CI detected, skipping manual submodule load"
 endif
