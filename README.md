@@ -64,7 +64,7 @@ Instructions missing here!
 
 ### Install [cpp-interface-coppeliasim](https://github.com/dqrobotics/cpp-interface-coppeliasim)
 
-#### MacOS (Apple Silicon)
+#### UNIX
 
 ```shell
 git clone https://github.com/dqrobotics/cpp-interface-coppeliasim.git
@@ -73,12 +73,6 @@ mkdir build && cd build
 cmake ..
 make -j16
 sudo make install
-```
-
-#### Ubuntu 
-
-```shell
-Instructions missing here!
 ```
 
 #### Windows 
