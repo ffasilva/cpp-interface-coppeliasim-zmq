@@ -358,6 +358,12 @@ public:
     DQ   get_twist(const std::string& objectname,
                  const REFERENCE& reference = REFERENCE::ABSOLUTE_FRAME);
 
+    VectorXd get_sensor_forces_and_torques(const int& handle) const;
+    VectorXd get_sensor_forces_and_torques(std::string& objectname);
+
+    DQ get_sensor_wrench(const int& handle) const;
+    DQ get_sensor_wrench(const std::string& objectname);
+
     double get_mass(const int& handle) const;
     double get_mass(const std::string& object_name);
 

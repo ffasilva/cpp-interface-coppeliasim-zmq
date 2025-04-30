@@ -296,10 +296,12 @@ DQ DQ_CoppeliaSimInterfaceZMQExperimental::get_twist(const int &handle, const RE
     VectorXd v = get_angular_and_linear_velocities(handle);
     DQ w = DQ(v.head(3));
     DQ p_dot = DQ(v.tail(3));
-    DQ x = _get_object_pose(handle);
-    DQ twist =  w + E_*(p_dot + cross(x.translation(), w));;
+    // DQ x = _get_object_pose(handle);
+    // DQ twist =  w + E_*(p_dot + cross(x.translation(), w));;
+    DQ twist =  w + E_*(p_dot);
     if (reference == REFERENCE::BODY_FRAME)
     {
+        DQ x = _get_object_pose(handle);
         twist =  x.conj()*twist*x;
     }
     return twist;
@@ -349,6 +351,77 @@ void DQ_CoppeliaSimInterfaceZMQExperimental::set_twist(const int &handle, const 
 void DQ_CoppeliaSimInterfaceZMQExperimental::set_twist(const std::string &objectname, const DQ &twist, const REFERENCE &reference)
 {
     set_twist(_get_handle_from_map(objectname), twist, reference);
+}
+
+/**
+ * @brief Get the forces and torques form a force sensor in CoppeliaSim.
+ * @param handle The handle of a force sensor in CoppeliaSim.
+ * @return A vector containg the forces and torques  form a force sensor
+ *         in CoppeliaSim in the format:
+ *              [force_x force_y force_z torque_x torque_y torque_z]
+ */
+VectorXd DQ_CoppeliaSimInterfaceZMQExperimental::get_sensor_forces_and_torques(
+    const int &handle) const
+{
+    _check_client();
+
+    int sensor_available;
+    std::vector<double> forces, torques;
+    std::tie(sensor_available, forces, torques) =
+        _ZMQWrapper::get_sim()->readForceSensor(handle);
+
+    VectorXd tau = VectorXd::Zero(6);
+    if (sensor_available == 1){
+        for (int i=0; i<3; i++){
+            tau(i) = forces.at(i);
+            tau(i+3) = torques.at(i);
+        }
+    } else {
+        throw std::runtime_error("No data available from the force sensor!");
+    }
+
+    return tau;
+}
+
+/**
+ * @brief Get the forces and torques form a force sensor in CoppeliaSim.
+ * @param objectname The name of a force sensor in CoppeliaSim.
+ * @return A vector containg the forces and torques  form a force sensor
+ *         in CoppeliaSim in the format:
+ *              [force_x force_y force_z torque_x torque_y torque_z]
+ */
+VectorXd DQ_CoppeliaSimInterfaceZMQExperimental::get_sensor_forces_and_torques(
+    std::string &objectname)
+{
+    return get_sensor_forces_and_torques(_get_handle_from_map(objectname));
+}
+
+/**
+ * @brief Get the wrench form a force sensor in CoppeliaSim.
+ * @param handle The handle of a force sensor in CoppeliaSim.
+ * @return A dual quaternion representing the wrench read by the force
+ *         sensor in CoppeliaSim.
+ */
+DQ DQ_CoppeliaSimInterfaceZMQExperimental::get_sensor_wrench(const int &handle) const
+{
+    VectorXd tau = get_sensor_forces_and_torques(handle);
+
+    DQ force = DQ(tau.head(3));
+    DQ torque = DQ(tau.tail(3));
+    DQ wrench =  force + E_*(torque);
+
+    return wrench;
+}
+
+/**
+ * @brief Get the wrench form a force sensor in CoppeliaSim.
+ * @param objectname The name of a force sensor in CoppeliaSim.
+ * @return A dual quaternion representing the wrench read by the force
+ *         sensor in CoppeliaSim.
+ */
+DQ DQ_CoppeliaSimInterfaceZMQExperimental::get_sensor_wrench(const std::string &objectname)
+{
+    return get_sensor_wrench(_get_handle_from_map(objectname));
 }
 
 /**
