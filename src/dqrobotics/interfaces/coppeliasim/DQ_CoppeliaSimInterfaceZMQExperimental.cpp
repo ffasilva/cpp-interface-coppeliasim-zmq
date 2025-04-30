@@ -203,9 +203,16 @@ VectorXd DQ_CoppeliaSimInterfaceZMQExperimental::get_angular_and_linear_velociti
     std::vector<int> params = get_velocity_const_params();
     VectorXd v = VectorXd::Zero(params.size());
     _check_client();
-    for (size_t i=0; i < params.size(); i++)
-    {
-        v(i) = _ZMQWrapper::get_sim()->getObjectFloatParam(handle, params.at(i));
+    // for (size_t i=0; i < params.size(); i++)
+    // {
+    //     v(i) = _ZMQWrapper::get_sim()->getObjectFloatParam(handle, params.at(i));
+    // }
+    std::vector<double> linearVelocity, angularVelocity;
+    std::tie(linearVelocity, angularVelocity) =
+        _ZMQWrapper::get_sim()->getVelocity(handle);
+    for (int i=0; i<3; i++){
+        v(i) = angularVelocity.at(i);
+        v(i+3) = linearVelocity.at(i);
     }
     if (reference == REFERENCE::BODY_FRAME)
     {
