@@ -1261,7 +1261,18 @@ void DQ_CoppeliaSimInterfaceZMQExperimental::set_mujoco_body_friction(const std:
         _ZMQWrapper::get_sim()->setEngineFloatParam(mujoco_body_param.at(i), _get_handle_from_map(bodyname),friction.at(i));
 }
 
-
+/**
+ * @brief Get the joint armature.
+ * @param jointname A string representing the joint name.
+ * @return A double representing the armature of the given joint.
+ */
+double DQ_CoppeliaSimInterfaceZMQExperimental::get_mujoco_joint_armature(
+    const std::string& jointname)
+{
+    return _ZMQWrapper::get_sim()->getEngineFloatParam(
+                _ZMQWrapper::get_sim()->mujoco_joint_armature,
+                _get_handle_from_map(jointname));
+}
 
 /**
  * @brief DQ_CoppeliaSimInterfaceZMQExperimental::_get_mass

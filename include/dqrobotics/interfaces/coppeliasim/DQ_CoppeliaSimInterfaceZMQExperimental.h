@@ -321,6 +321,8 @@ public:
     void set_mujoco_joint_armature (const std::string& jointname, const double& armature);
     void set_mujoco_body_friction  (const std::string& bodyname,  const std::vector<double>& friction);
 
+    double get_mujoco_joint_armature(const std::string& jointname);
+
     void   pause_simulation() const;
     double get_simulation_time() const;
 
